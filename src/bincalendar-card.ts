@@ -25,7 +25,7 @@ console.info(
 );
 
 // TODO Name your custom element
-@customElement('boilerplate-card')
+@customElement('bincalendar-card')
 export class BoilerplateCard extends LitElement {
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     return document.createElement('boilerplate-card-editor') as LovelaceCardEditor;
@@ -38,6 +38,21 @@ export class BoilerplateCard extends LitElement {
   // TODO Add any properities that should cause your element to re-render here
   @property() public hass?: HomeAssistant;
   @property() private _config?: BoilerplateCardConfig;
+  @property() private data: Promise<{date: string, bin_counts: object}>;
+  @property() public date: string;
+  @property() public bin_counts: object;
+
+  constructor() {
+    super();
+
+    // init
+    this.date = "";
+    this.bin_counts = [];
+
+    // empty promise initialization
+    this.data = new Promise<{date: string, bin_counts: object}>(function () {});
+
+  }
 
   public setConfig(config: BoilerplateCardConfig): void {
     // TODO Check for required fields and that they are of the proper format
@@ -53,6 +68,32 @@ export class BoilerplateCard extends LitElement {
       name: 'Boilerplate',
       ...config,
     };
+
+    // check errors in url
+    var customUrl = config.url
+    customUrl = customUrl.replace('/:+$/', "");
+    customUrl = customUrl.replace('//+$/', "");
+
+    // create promise for request
+    this.data = new Promise<{date: string, bin_counts: object}>(function (resolve) {
+      var request = new XMLHttpRequest();
+
+  		request.onreadystatechange = function () {
+  			if (request.status >= 200 && request.status < 300) {
+          var reply: object = JSON.parse(request.responseText);
+          const temp: String[] = new Date(String(reply[0])).toString().split(" ");
+          resolve({date: temp[0] + " " + temp[2] + " " + temp[1], bin_counts: reply[1]});
+  			}
+  	   };
+
+  		request.open('GET', customUrl + ":" + config.port, true);
+  		request.send();
+  	});
+
+    this.data.then(({date, bin_counts}) => {
+      this.date = date;
+      this.bin_counts = bin_counts;
+    });
   }
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
@@ -73,6 +114,15 @@ export class BoilerplateCard extends LitElement {
       `;
     }
 
+    const bins = [] as TemplateResult[];
+    for (var i = 0; i < Object.keys(this.bin_counts).length; i++)
+      bins.push(
+        html`
+          <img src=${this._config.images[i]} style="display:${this.bin_counts[this._config.bins[i]] == 0 ? 'none' : 'inline'};">
+          </img>
+        `
+      )
+
     return html`
       <ha-card
         .header=${this._config.name}
@@ -84,7 +134,13 @@ export class BoilerplateCard extends LitElement {
         })}
         tabindex="0"
         aria-label=${`Boilerplate: ${this._config.entity}`}
-      ></ha-card>
+      >
+        In <br><b id="city">${this._config.city}</b><br>
+        the next emptying<br>
+        will be on<br>
+        <b id="date">${this.date}</b><br><br>
+        <bins>${bins}</bins>
+      </ha-card>
     `;
   }
 
@@ -102,6 +158,13 @@ export class BoilerplateCard extends LitElement {
         background-color: #fce588;
         padding: 8px;
       }
+      ha-card {
+        text-align: center;
+      }
+      bins img {
+        width: 45px;
+      }
     `;
   }
+
 }

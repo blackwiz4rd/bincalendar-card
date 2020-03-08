@@ -23,6 +23,11 @@ Hey dude! Help me out for a couple of :beers: or a :coffee:!
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
 | type              | string  | **Required** | `custom:boilerplate-card`                   |
+| city              | string  | **Required** | Name of the city for calendar               |
+| bins              | object  | **Required** | Types of bins                               |
+| images            | object  | **Required** | List of images                              |
+| url               | string  | **Required** | The url for the service                     |
+| port              | string  | **Required** | Port for the service                        |
 | name              | string  | **Optional** | Card name                                   | `Boilerplate`       |
 | show_error        | boolean | **Optional** | Show what an error looks like for the card  | `false`             |
 | show_warning      | boolean | **Optional** | Show what a warning looks like for the card | `false`             |
@@ -76,12 +81,12 @@ Note: this is available only in vscode ensure you have the [Remote Containers](h
 1. Fork and clone the repository.
 2. Open a [devcontainer][devcontainer] terminal and run `npm start` when it's ready.
 3. The compiled `.js` file will be accessible on
-   `http://127.0.0.1:5000/boilerplate-card.js`.
+   `http://127.0.0.1:5000/bincalendar-card.js`.
 4. On a running Home Assistant installation add this to your Lovelace
    `resources:`
 
 ```yaml
-- url: "http://127.0.0.1:5000/boilerplate-card.js"
+- url: "http://127.0.0.1:5000/bincalendar-card.js"
   type: module
 ```
 
