@@ -81,11 +81,12 @@ export class BoilerplateCard extends LitElement {
 
     // create promise for request
     this.data = new Promise<{ date: string; bin_counts: object }>(function(resolve, reject) {
-      const request = new XMLHttpRequest();
-
-      request.onreadystatechange = function() {
-        if (request.status >= 200 && request.status < 300) {
-          const reply: object = JSON.parse(request.responseText);
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', customUrl + ':' + config.port, true);
+      xhr.onload = function() {
+        if (xhr.status == 200) {
+          console.log(xhr.responseText);
+          const reply: object = JSON.parse(xhr.responseText);
           const temp: string[] = new Date(String(reply[0])).toString().split(' ');
           resolve({
             date: temp[0] + ' ' + temp[2] + ' ' + temp[1],
@@ -93,14 +94,12 @@ export class BoilerplateCard extends LitElement {
           });
         } else {
           reject({
-            status: request.status,
-            statusText: request.statusText,
+            status: xhr.status,
+            statusText: xhr.statusText,
           });
         }
       };
-
-      request.open('GET', customUrl + ':' + config.port, true);
-      request.send();
+      xhr.send(null);
     });
 
     this.data
