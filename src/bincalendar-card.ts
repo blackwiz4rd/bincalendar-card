@@ -38,7 +38,7 @@ export class BoilerplateCard extends LitElement {
   // TODO Add any properities that should cause your element to re-render here
   @property() public hass?: HomeAssistant;
   @property() private _config?: BoilerplateCardConfig;
-  @property() private data: Promise<{date: string, bin_counts: object}>;
+  @property() private data: Promise<{ date: string; bin_counts: object }>;
   @property() public date: string;
   @property() public bin_counts: object;
 
@@ -46,12 +46,16 @@ export class BoilerplateCard extends LitElement {
     super();
 
     // init
-    this.date = "";
+    this.date = '';
     this.bin_counts = [];
 
     // empty promise initialization
-    this.data = new Promise<{date: string, bin_counts: object}>(function () {});
-    this.data.resolve(null);
+    this.data = new Promise<{ date: string; bin_counts: object }>(function(resolve) {
+      resolve({
+        date: '',
+        bin_counts: {},
+      });
+    });
   }
 
   public setConfig(config: BoilerplateCardConfig): void {
@@ -70,44 +74,43 @@ export class BoilerplateCard extends LitElement {
     };
 
     // check errors in url
-    var customUrl = config.url
-    customUrl = customUrl.replace('/:+$/', "");
-    customUrl = customUrl.replace('//+$/', "");
+    let customUrl = config.url;
+    customUrl = customUrl.replace('/:+$/', '');
+    customUrl = customUrl.replace('//+$/', '');
     console.log(customUrl);
 
     // create promise for request
-    this.data = new Promise<{date: string, bin_counts: object}>(function (resolve) {
-      var request = new XMLHttpRequest();
+    this.data = new Promise<{ date: string; bin_counts: object }>(function(resolve, reject) {
+      const request = new XMLHttpRequest();
 
-      request.onreadystatechange = function () {
-      	if (request.status >= 200 && request.status < 300) {
-          var reply: object = JSON.parse(request.responseText);
-          const temp: String[] = new Date(String(reply[0])).toString().split(" ");
+      request.onreadystatechange = function() {
+        if (request.status >= 200 && request.status < 300) {
+          const reply: object = JSON.parse(request.responseText);
+          const temp: string[] = new Date(String(reply[0])).toString().split(' ');
           resolve({
-            date: temp[0] + " " + temp[2] + " " + temp[1],
-            bin_counts: reply[1]
+            date: temp[0] + ' ' + temp[2] + ' ' + temp[1],
+            bin_counts: reply[1],
           });
-      	}
-        else {
+        } else {
           reject({
             status: request.status,
-            statusText: request.statusText
+            statusText: request.statusText,
           });
         }
-       };
+      };
 
-      request.open('GET', customUrl + ":" + config.port, true);
+      request.open('GET', customUrl + ':' + config.port, true);
       request.send();
-  	});
+    });
 
     this.data
-    .then(({date, bin_counts}) => {
-      this.date = date;
-      this.bin_counts = bin_counts;
-    })
-    .catch({status, statusText}) => {
-      console.log('Something went wrong: ' + status + " " + statusText);
-    });
+      .then(({ date, bin_counts }) => {
+        this.date = date;
+        this.bin_counts = bin_counts;
+      })
+      .catch(({ status, statusText }) => {
+        console.log('Something went wrong: ' + status + ' ' + statusText);
+      });
   }
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
@@ -129,13 +132,15 @@ export class BoilerplateCard extends LitElement {
     }
 
     const bins = [] as TemplateResult[];
-    for (var i = 0; i < Object.keys(this.bin_counts).length; i++)
+    for (let i = 0; i < Object.keys(this.bin_counts).length; i++)
       bins.push(
         html`
-          <img src=${this._config.images[i]} style="display:${this.bin_counts[this._config.bins[i]] == 0 ? 'none' : 'inline'};">
+          <img src=${this._config.images[i]} style="display:${
+          this.bin_counts[this._config.bins[i]] == 0 ? 'none' : 'inline'
+        };">
           </img>
-        `
-      )
+        `,
+      );
 
     return html`
       <ha-card
@@ -149,10 +154,10 @@ export class BoilerplateCard extends LitElement {
         tabindex="0"
         aria-label=${`Boilerplate: ${this._config.entity}`}
       >
-        In <br><b id="city">${this._config.city}</b><br>
-        the next emptying<br>
-        will be on<br>
-        <b id="date">${this.date}</b><br><br>
+        In <br /><b id="city">${this._config.city}</b><br />
+        the next emptying<br />
+        will be on<br />
+        <b id="date">${this.date}</b><br /><br />
         <bins>${bins}</bins>
       </ha-card>
     `;
@@ -180,5 +185,4 @@ export class BoilerplateCard extends LitElement {
       }
     `;
   }
-
 }
