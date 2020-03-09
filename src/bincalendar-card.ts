@@ -51,7 +51,7 @@ export class BoilerplateCard extends LitElement {
 
     // empty promise initialization
     this.data = new Promise<{date: string, bin_counts: object}>(function () {});
-
+    this.data.resolve(null);
   }
 
   public setConfig(config: BoilerplateCardConfig): void {
@@ -73,26 +73,40 @@ export class BoilerplateCard extends LitElement {
     var customUrl = config.url
     customUrl = customUrl.replace('/:+$/', "");
     customUrl = customUrl.replace('//+$/', "");
+    console.log(customUrl);
 
     // create promise for request
     this.data = new Promise<{date: string, bin_counts: object}>(function (resolve) {
       var request = new XMLHttpRequest();
 
-  		request.onreadystatechange = function () {
-  			if (request.status >= 200 && request.status < 300) {
+      request.onreadystatechange = function () {
+      	if (request.status >= 200 && request.status < 300) {
           var reply: object = JSON.parse(request.responseText);
           const temp: String[] = new Date(String(reply[0])).toString().split(" ");
-          resolve({date: temp[0] + " " + temp[2] + " " + temp[1], bin_counts: reply[1]});
-  			}
-  	   };
+          resolve({
+            date: temp[0] + " " + temp[2] + " " + temp[1],
+            bin_counts: reply[1]
+          });
+      	}
+        else {
+          reject({
+            status: request.status,
+            statusText: request.statusText
+          });
+        }
+       };
 
-  		request.open('GET', customUrl + ":" + config.port, true);
-  		request.send();
+      request.open('GET', customUrl + ":" + config.port, true);
+      request.send();
   	});
 
-    this.data.then(({date, bin_counts}) => {
+    this.data
+    .then(({date, bin_counts}) => {
       this.date = date;
       this.bin_counts = bin_counts;
+    })
+    .catch({status, statusText}) => {
+      console.log('Something went wrong: ' + status + " " + statusText);
     });
   }
 
