@@ -22,14 +22,14 @@ Hey dude! Help me out for a couple of :beers: or a :coffee:!
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
-| entity            | string  | **Required** | Home Assistant entity ID.                   | `none`              |
+| entity            | string  | **Required** | Home Assistant entity ID.                   |
 | type              | string  | **Required** | `custom:bincalendar-card`                   |
 | city              | string  | **Required** | Name of the city for calendar               |
 | bins              | object  | **Required** | Types of bins                               |
 | images            | object  | **Required** | List of images                              |
 | url               | string  | **Required** | The url for the service                     |
 | port              | string  | **Required** | Port for the service                        |
-| name              | string  | **Optional** | Card name                                   | `Bincalendar`       |
+| name              | string  | **Required** | Card name                                   | `Bincalendar`       |
 | show_error        | boolean | **Optional** | Show what an error looks like for the card  | `false`             |
 | show_warning      | boolean | **Optional** | Show what a warning looks like for the card | `false`             |
 | tap_action        | object  | **Optional** | Action to take on tap                       | `action: more-info` |
@@ -88,6 +88,29 @@ Note: this is available only in vscode ensure you have the [Remote Containers](h
 ```yaml
 - url: "http://127.0.0.1:5000/bincalendar-card.js"
   type: module
+```
+5. Example of configuration on a running Home Assistant installation add this to your Lovelace `cards`:
+
+```yaml
+- entity: none
+  action: none
+  bins:
+    - Secco
+    - Carta
+    - Umido
+    - VPL
+    - Vegetale
+  city: New York
+  images:
+    - /local/icons/s.png
+    - /local/icons/c.png
+    - /local/icons/u.png
+    - /local/icons/v.png
+    - /local/icons/vg.png
+  name: Bin Calendar
+  port: 8082
+  type: 'custom:bincalendar-card'
+  url: 'https://yourdomain.org'
 ```
 
 _Change "127.0.0.1" to the IP of your development machine._
