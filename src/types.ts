@@ -13,7 +13,6 @@ export interface BoilerplateCardConfig {
   type: string;
   city: string;
   url: string;
-  port: number;
   bins: object;
   images: object;
 }

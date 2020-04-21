@@ -108,12 +108,11 @@ Note: this is available only in vscode ensure you have the [Remote Containers](h
     - /local/icons/v.png
     - /local/icons/vg.png
   name: Bin Calendar
-  port: 8082
   type: 'custom:bincalendar-card'
   url: 'https://yourdomain.org'
 ```
 
-_Change "127.0.0.1" to the IP of your development machine._
+_Change the url to the JSON file of your calendar. You can store your bin calendar on a JSON file using [npoint](https://www.npoint.io). If your calendar is in ical format, convert it to json using online resources._
 
 ### Bonus
 

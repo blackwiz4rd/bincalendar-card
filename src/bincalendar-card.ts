@@ -17,6 +17,8 @@ import { CARD_VERSION } from './const';
 
 import { localize } from './localize/localize';
 
+import { parseReply } from './bincalendar-parser'
+
 /* eslint no-console: 0 */
 console.info(
   `%c  BOILERPLATE-CARD \n%c  ${localize('common.version')} ${CARD_VERSION}    `,
@@ -38,7 +40,7 @@ export class BoilerplateCard extends LitElement {
   // TODO Add any properities that should cause your element to re-render here
   @property() public hass?: HomeAssistant;
   @property() private _config?: BoilerplateCardConfig;
-  @property() private data: Promise<{ date: string; bin_counts: object }>;
+  @property() private data: Promise<{ reply: object }>;
   @property() public date: string;
   @property() public bin_counts: object;
 
@@ -50,10 +52,9 @@ export class BoilerplateCard extends LitElement {
     this.bin_counts = [];
 
     // empty promise initialization
-    this.data = new Promise<{ date: string; bin_counts: object }>(function(resolve) {
+    this.data = new Promise<{ reply: object }>(function(resolve) {
       resolve({
-        date: '',
-        bin_counts: {},
+        reply: {},
       });
     });
   }
@@ -80,17 +81,15 @@ export class BoilerplateCard extends LitElement {
     console.log(customUrl);
 
     // create promise for request
-    this.data = new Promise<{ date: string; bin_counts: object }>(function(resolve, reject) {
+    this.data = new Promise<{ reply: object }>(function(resolve, reject) {
       const xhr = new XMLHttpRequest();
-      xhr.open('GET', customUrl + ':' + config.port, true);
-      xhr.onload = function() {
+      xhr.open('GET', customUrl, true);
+      xhr.onload = () => {
         if (xhr.status == 200) {
-          console.log(xhr.responseText);
+          // console.log(xhr.responseText);
           const reply: object = JSON.parse(xhr.responseText);
-          const temp: string[] = new Date(String(reply[0])).toString().split(' ');
           resolve({
-            date: temp[0] + ' ' + temp[2] + ' ' + temp[1],
-            bin_counts: reply[1],
+            reply: reply
           });
         } else {
           reject({
@@ -103,9 +102,13 @@ export class BoilerplateCard extends LitElement {
     });
 
     this.data
-      .then(({ date, bin_counts }) => {
-        this.date = date;
-        this.bin_counts = bin_counts;
+      .then(({ reply }) => {
+        // custom function to get date and bins
+        const parsed_reply: object = parseReply(reply, config.bins)
+        const temp: string[] = new Date(String(parsed_reply[0])).toString().split(' ');
+
+        this.date = temp[0] + ' ' + temp[2] + ' ' + temp[1];
+        this.bin_counts = parsed_reply[1];
       })
       .catch(({ status, statusText }) => {
         console.log('Something went wrong: ' + status + ' ' + statusText);
