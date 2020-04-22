@@ -17,7 +17,7 @@ import { CARD_VERSION } from './const';
 
 import { localize } from './localize/localize';
 
-import { parseReply } from './bincalendar-parser'
+import { parseReply } from './bincalendar-parser';
 
 /* eslint no-console: 0 */
 console.info(
@@ -89,7 +89,7 @@ export class BoilerplateCard extends LitElement {
           // console.log(xhr.responseText);
           const reply: object = JSON.parse(xhr.responseText);
           resolve({
-            reply: reply
+            reply: reply,
           });
         } else {
           reject({
@@ -104,7 +104,7 @@ export class BoilerplateCard extends LitElement {
     this.data
       .then(({ reply }) => {
         // custom function to get date and bins
-        const parsed_reply: object = parseReply(reply, config.bins)
+        const parsed_reply: object = parseReply(reply, config.bins);
         const temp: string[] = new Date(String(parsed_reply[0])).toString().split(' ');
 
         this.date = temp[0] + ' ' + temp[2] + ' ' + temp[1];

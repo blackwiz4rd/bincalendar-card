@@ -1,4 +1,4 @@
-# Bincalendar Card by [@iantrich](https://www.github.com/iantrich)
+# Bincalendar Card by [@blackwiz4rd](https://www.github.com/blackwiz4rd)
 
 A community driven bincalendar of best practices for Home Assistant Lovelace custom cards
 
@@ -12,11 +12,27 @@ A community driven bincalendar of best practices for Home Assistant Lovelace cus
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-## Support
+### How does Bincalendar Card work?
 
-Hey dude! Help me out for a couple of :beers: or a :coffee:!
+In bincalendar-card you must create your own parser for the calendar to which you are referencing to. You can upload your calendar in a JSON format (use online converters if the calendar you have is not formatted as JSON).
 
-[![coffee](https://www.buymeacoffee.com/assets/img/custom_images/black_img.png)](https://www.buymeacoffee.com/zJtVxUAgH)
+You can store your bin calendar on a JSON file using [npoint](https://www.npoint.io).
+
+The bincalendar-card makes an http request to your online JSON, provided as a `url` parameter in the lovelace configuration (see options), and uses `/src/bincalendar-parser.ts` to parse the JSON content.
+
+### How do I create my own parse?
+
+To create your own parser, you need to edit `/src/bincalendar-parser.ts`.
+
+In `/src/bincalendar-parser.ts` you must build your own `parseReply` function which must return:
+
+1. The next emptying date as a `Date` object.
+
+2. The *bins_count*. The *bins_count* is a dictionary having 1 if the bin will be emptied, and 0 if the bin won't be emptied on the next emptying date. For example: {paper: 1, plastic: 0}. This means paper will be emptied.
+
+The *bins_count* must match the bins option specified in lovelace configuration.
+
+The *images* must be in the same order as in *bins* option specified in lovelace configuration. You can provide your own image for each bin you specify.
 
 ## Options
 
@@ -29,7 +45,7 @@ Hey dude! Help me out for a couple of :beers: or a :coffee:!
 | images            | object  | **Required** | List of images                              |
 | url               | string  | **Required** | The url for the service                     |
 | port              | string  | **Required** | Port for the service                        |
-| name              | string  | **Required** | Card name                                   | `Bincalendar`       |
+| name              | string  | **Required** | Card name                                   |                     |
 | show_error        | boolean | **Optional** | Show what an error looks like for the card  | `false`             |
 | show_warning      | boolean | **Optional** | Show what a warning looks like for the card | `false`             |
 | tap_action        | object  | **Optional** | Action to take on tap                       | `action: more-info` |
@@ -46,9 +62,9 @@ Hey dude! Help me out for a couple of :beers: or a :coffee:!
 | service         | string | **Optional** | Service to call (e.g. media_player.media_play_pause) when action defined as call-service                                               | `none`      |
 | service_data    | object | **Optional** | Service data to include (e.g. entity_id: media_player.bedroom) when action defined as call-service                                     | `none`      |
 | haptic          | string | **Optional** | Haptic feedback for the [Beta IOS App](http://home-assistant.io/ios/beta) _success, warning, failure, light, medium, heavy, selection_ | `none`      |
-| repeat          | number | **Optional** | How often to repeat the `hold_action` in milliseconds.                                                                                 | `non`       |
+| repeat          | number | **Optional** | How often to repeat the `hold_action` in milliseconds.                                                                                 | `none`      |
 
-## Starting a new card from bincalendar-card
+## Edit bincalendar-card
 
 ### Step 1
 
@@ -74,7 +90,7 @@ Search the repository for all instances of "TODO" and handle the changes/suggest
 Customize to suit your needs and contribute it back to the community
 
 
-## Starting a new card from bincalendar-card with [devcontainer][devcontainer]
+## Edit bincalendar-card with [devcontainer][devcontainer]
 
 Note: this is available only in vscode ensure you have the [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed.
 
@@ -114,33 +130,8 @@ Note: this is available only in vscode ensure you have the [Remote Containers](h
 
 _Change the url to the JSON file of your calendar. You can store your bin calendar on a JSON file using [npoint](https://www.npoint.io). If your calendar is in ical format, convert it to json using online resources._
 
-### Bonus
+## Support - Boilerplate Card (not me)
 
-If you need a fresh test instance you can install a fresh Home Assistant instance inside the devcontainer as well.
+Hey dude! Help me out for a couple of :beers: or a :coffee:!
 
-1. Run the command `dc start`.
-2. Home Assistant will install and will eventually be running on port `9123`
-
-## [Troubleshooting](https://github.com/thomasloven/hass-config/wiki/Lovelace-Plugins)
-NB This will not work with node 9.x if you see the following errors try installing node 8.10.0
-```yarn install
-yarn install v1.3.2
-[1/4] 🔍  Resolving packages...
-warning rollup-plugin-commonjs@10.1.0: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-commonjs.
-[2/4] 🚚  Fetching packages...
-error @typescript-eslint/eslint-plugin@2.6.0: The engine "node" is incompatible with this module. Expected version "^8.10.0 || ^10.13.0 || >=11.10.1".
-error Found incompatible module
-info Visit https://yarnpkg.com/en/docs/cli/install for documentation about this command.
-```
-
-[commits-shield]: https://img.shields.io/github/commit-activity/y/custom-cards/boilerplate-card.svg?style=for-the-badge
-[commits]: https://github.com/custom-cards/boilerplate-card/commits/master
-[devcontainer]: https://code.visualstudio.com/docs/remote/containers
-[discord]: https://discord.gg/5e9yvq
-[discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
-[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
-[forum]: https://community.home-assistant.io/c/projects/frontend
-[license-shield]: https://img.shields.io/github/license/custom-cards/boilerplate-card.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/maintenance/yes/2019.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/custom-cards/boilerplate-card.svg?style=for-the-badge
-[releases]: https://github.com/custom-cards/boilerplate-card/releases
+[![coffee](https://www.buymeacoffee.com/assets/img/custom_images/black_img.png)](https://www.buymeacoffee.com/zJtVxUAgH)
