@@ -20,7 +20,7 @@ You can store your bin calendar on a JSON file using [npoint](https://www.npoint
 
 The bincalendar-card makes an http request to your online JSON, provided as a `url` parameter in the lovelace configuration (see options), and uses `/src/bincalendar-parser.ts` to parse the JSON content.
 
-### How do I create my own parse?
+### How do I create my own parser?
 
 To create your own parser, you need to edit `/src/bincalendar-parser.ts`.
 
@@ -105,7 +105,8 @@ Note: this is available only in vscode ensure you have the [Remote Containers](h
 - url: "http://127.0.0.1:5000/bincalendar-card.js"
   type: module
 ```
-5. Example of configuration on a running Home Assistant installation add this to your Lovelace `cards`:
+5. Upload your bin images to: `home/yourhomeassistantuser/.homeassistant/www/icons`
+6. Example of configuration on a running Home Assistant installation add this to your Lovelace `cards`:
 
 ```yaml
 - entity: none
@@ -129,6 +130,18 @@ Note: this is available only in vscode ensure you have the [Remote Containers](h
 ```
 
 _Change the url to the JSON file of your calendar. You can store your bin calendar on a JSON file using [npoint](https://www.npoint.io). If your calendar is in ical format, convert it to json using online resources._
+
+## After you are done editing
+
+1. Lint & build on the project.
+   `npm run build`
+2. Upload `/dist/bincalendar-card.js` to `home/yourhomeassistantuser/.homeassistant/www`
+3. Change your Lovelace configuration to:
+   `resources:`
+
+```yaml
+- url: /local/bincalendar-card.js
+  type: module
 
 ## Support - Boilerplate Card (not me)
 
