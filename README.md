@@ -132,7 +132,7 @@ _Change the url to the JSON file of your calendar. You can store your bin calend
 ```yaml
 - url: /local/bincalendar-card.js
   type: module
-
+```
 ## Support - Boilerplate Card (not me)
 
 Hey dude! Help me out for a couple of :beers: or a :coffee:!
