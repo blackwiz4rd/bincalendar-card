@@ -1,16 +1,6 @@
 # Bincalendar Card by [@blackwiz4rd](https://www.github.com/blackwiz4rd)
 
-A community driven bincalendar of best practices for Home Assistant Lovelace custom cards
-
-[![GitHub Release][releases-shield]][releases]
-[![License][license-shield]](LICENSE.md)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
-
-![Project Maintenance][maintenance-shield]
-[![GitHub Activity][commits-shield]][commits]
-
-[![Discord][discord-shield]][discord]
-[![Community Forum][forum-shield]][forum]
+Built by using [Boilerplate Card](https://github.com/custom-cards/boilerplate-card)
 
 ### How does Bincalendar Card work?
 
