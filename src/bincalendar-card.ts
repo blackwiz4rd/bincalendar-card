@@ -144,17 +144,20 @@ export class BoilerplateCard extends LitElement {
         `,
       );
 
+      // TODO: if you want to implement an action when pressing on the card
+      // @action=${this._handleAction}
+      // .actionHandler=${actionHandler({
+      //   hasHold: hasAction(this._config.hold_action),
+      //   hasDoubleTap: hasAction(this._config.double_tap_action),
+      //   repeat: this._config.hold_action ? this._config.hold_action.repeat : undefined,
+      // })}
+      // TODO: add entity
+      // aria-label=${`Boilerplate: ${this._config.entity}`}
+
     return html`
       <ha-card
         .header=${this._config.name}
-        @action=${this._handleAction}
-        .actionHandler=${actionHandler({
-          hasHold: hasAction(this._config.hold_action),
-          hasDoubleTap: hasAction(this._config.double_tap_action),
-          repeat: this._config.hold_action ? this._config.hold_action.repeat : undefined,
-        })}
         tabindex="0"
-        aria-label=${`Boilerplate: ${this._config.entity}`}
       >
         In <br /><b id="city">${this._config.city}</b><br />
         the next emptying<br />
@@ -165,11 +168,11 @@ export class BoilerplateCard extends LitElement {
     `;
   }
 
-  private _handleAction(ev: ActionHandlerEvent): void {
-    if (this.hass && this._config && ev.detail.action) {
-      handleAction(this, this.hass, this._config, ev.detail.action);
-    }
-  }
+  // private _handleAction(ev: ActionHandlerEvent): void {
+  //   if (this.hass && this._config && ev.detail.action) {
+  //     handleAction(this, this.hass, this._config, ev.detail.action);
+  //   }
+  // }
 
   static get styles(): CSSResult {
     return css`
@@ -180,7 +183,7 @@ export class BoilerplateCard extends LitElement {
         padding: 8px;
       }
       ha-card {
-        text-align: center;
+        text-align: left;
       }
       bins img {
         width: 45px;

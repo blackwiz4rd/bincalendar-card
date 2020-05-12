@@ -71,21 +71,13 @@ Install necessary modules (verified to work in node 8.x)
 Do a test lint & build on the project. You can see available scripts in the package.json
 `npm run build`
 
-### Step 4
 
-Search the repository for all instances of "TODO" and handle the changes/suggestions
-
-### Step 5
-
-Customize to suit your needs and contribute it back to the community
-
-
-## Edit bincalendar-card with [devcontainer][devcontainer]
+## Edit bincalendar-card
 
 Note: this is available only in vscode ensure you have the [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed.
 
 1. Fork and clone the repository.
-2. Open a [devcontainer][devcontainer] terminal and run `npm start` when it's ready.
+2. Open a terminal on bincalendar-card directory and run `npm start` when it's ready.
 3. The compiled `.js` file will be accessible on
    `http://127.0.0.1:5000/bincalendar-card.js`.
 4. On a running Home Assistant installation add this to your Lovelace
@@ -99,7 +91,7 @@ Note: this is available only in vscode ensure you have the [Remote Containers](h
 6. Example of configuration on a running Home Assistant installation add this to your Lovelace `cards`:
 
 ```yaml
-- entity: none
+- entity: bincalendar
   action: none
   bins:
     - Secco
@@ -118,6 +110,8 @@ Note: this is available only in vscode ensure you have the [Remote Containers](h
   type: 'custom:bincalendar-card'
   url: 'https://yourdomain.org'
 ```
+
+7. Search the repository for all instances of "TODO" and handle the changes/suggestions
 
 _Change the url to the JSON file of your calendar. You can store your bin calendar on a JSON file using [npoint](https://www.npoint.io). If your calendar is in ical format, convert it to json using online resources._
 
