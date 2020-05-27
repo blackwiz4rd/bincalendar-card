@@ -2,7 +2,7 @@
 
 Built by using [Boilerplate Card](https://github.com/custom-cards/boilerplate-card)
 
-![Bincalendar Card](sample-image.png)
+![Bincalendar Card](sample-image.png =340x240)
 
 ### How does Bincalendar Card work?
 
