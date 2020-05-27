@@ -2,6 +2,8 @@
 
 Built by using [Boilerplate Card](https://github.com/custom-cards/boilerplate-card)
 
+![Bincalendar Card](sample-image.png)
+
 ### How does Bincalendar Card work?
 
 In bincalendar-card you must create your own parser for the calendar to which you are referencing to. You can upload your calendar in a JSON format (use online converters if the calendar you have is not formatted as JSON).
