@@ -21,6 +21,6 @@ export interface BoilerplateCardConfig extends LovelaceCardConfig {
   type: string;
   city: string;
   url: string;
-  bins: object;
-  images: object;
+  bins: string[];
+  images: string[];
 }

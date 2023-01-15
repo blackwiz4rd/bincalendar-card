@@ -10,8 +10,20 @@ function parseDate(date: string): Date {
   return new Date(YYYY, MM, DD);
 }
 
-export function parseReply(calendar: object, bins: object): object {
-  const events: object = calendar['vcalendar']['0']['vevent'];
+export type Reply = {
+  date: Date;
+  bins_count: Record<string, number>;
+};
+
+type Event = {
+  dtstart: string,
+  dtend: string,
+  description: string,
+  summary: string,
+}
+
+export function parseReply(calendar: any, bins: string[]): Reply {
+  const events: Event[] = calendar['vcalendar'][0]['vevent'];
   const date: Date = new Date();
   const afterDates = Object.values(events).filter(function(d) {
     return parseDate(d.dtstart).getTime() - date.getTime() > 0;
@@ -23,11 +35,11 @@ export function parseReply(calendar: object, bins: object): object {
     return distancea - distanceb;
   });
 
-  const bins_count = {};
+  const bins_count: Record<string, number> = {};
   for (const i in bins) {
     const re = new RegExp(bins[i], 'g');
     bins_count[bins[i]] = (afterDates[0].summary.match(re) || []).length;
   }
 
-  return [parseDate(afterDates[0].dtstart), bins_count];
+  return {date: parseDate(afterDates[0].dtstart), bins_count: bins_count};
 }
