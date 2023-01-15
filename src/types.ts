@@ -1,7 +1,15 @@
-// TODO Add your configuration elements here for type-checking
-import { ActionConfig } from 'custom-card-helpers';
+import { ActionConfig, LovelaceCard, LovelaceCardConfig, LovelaceCardEditor } from 'custom-card-helpers';
 
-export interface BoilerplateCardConfig {
+declare global {
+  interface HTMLElementTagNameMap {
+    'boilerplate-card-editor': LovelaceCardEditor;
+    'hui-error-card': LovelaceCard;
+  }
+}
+
+// TODO Add your configuration elements here for type-checking
+export interface BoilerplateCardConfig extends LovelaceCardConfig {
+  type: string;
   name?: string;
   show_warning?: boolean;
   show_error?: boolean;

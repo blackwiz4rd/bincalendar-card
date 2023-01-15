@@ -42,7 +42,7 @@ The *images* must be in the same order as in *bins* option specified in lovelace
 | show_warning      | boolean | **Optional** | Show what a warning looks like for the card | `false`             |
 | tap_action        | object  | **Optional** | Action to take on tap                       | `action: more-info` |
 | hold_action       | object  | **Optional** | Action to take on hold                      | `none`              |
-| double_tap_action | object  | **Optional** | Action to take on hold                      | `none`              |
+| double_tap_action | object  | **Optional** | Action to take on double tap                | `none`              |
 
 ## Action Options
 
@@ -60,13 +60,12 @@ The *images* must be in the same order as in *bins* option specified in lovelace
 
 ### Step 1
 
-Clone this repository
+Click the "Use this template" button on the main page and clone the new repository to your machine
 
 ### Step 2
 
 Install necessary modules (verified to work in node 8.x)
 `yarn install` or `npm install`
-
 
 ### Step 3
 
